@@ -7,6 +7,8 @@ import matplotlib.animation as animation
 n_pendulums = 10
 # degree difference
 d_diff = 0.000001
+# simulation length
+t_max = 15
 
 # constants
 g = -9.81  # gravitational acceleration
@@ -27,7 +29,6 @@ p2_n = 0
 
 # step
 dt = 1 / 60
-t_max = 15
 n_steps = int(t_max / dt)
 
 # lists of lists for results
