@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # number of pendulums
-n_pendulums = 2
+n_pendulums = 10
 # degree difference
 d_diff = 0.000001
 
@@ -243,10 +243,17 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
     fps = 1 / dt
 
     # Create figure and axis
-    fig, ax = plt.subplots()
-    ax.set_xlim(-3, 3)
-    ax.set_ylim(-3, 3)
+    fig, ax = plt.subplots(figsize=(4.5, 4.5))
+    ax.set_xlim(-2, 2)
+    ax.set_ylim(-2, 2)
     ax.set_aspect('equal')
+
+    # Hide the numbers on the axes
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    # Hide the axes
+    ax.axis('off')
 
     # Use a colormap to get different colors
     cmap = plt.colormaps.get_cmap('rainbow')
@@ -301,6 +308,7 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
     ani = animation.FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True,
                                   interval=1000 / fps)
 
+    # If you want to save, not only show animation
     '''Writer = animation.writers['ffmpeg']
     writer = Writer(fps=fps, metadata=dict(artist='Me'), bitrate=1800)
 
