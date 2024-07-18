@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # number of pendulums
-n_pendulums = 200
+n_pendulums = 2
 # degree difference
-d_diff = 0.0000001
+d_diff = 0.000001
 
 # constants
 g = -9.81  # gravitational acceleration
@@ -19,15 +19,15 @@ L2 = 1
 
 # initial conditions
 # deflection
-theta1 = 0.121
-theta2 = 0.2
+theta1 = -0.123
+theta2 = 0.21
 # momentum
 p1_n = 0
 p2_n = 0
 
 # step
 dt = 1 / 60
-t_max = 10
+t_max = 15
 n_steps = int(t_max / dt)
 
 # lists of lists for results
@@ -249,8 +249,8 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
     ax.set_aspect('equal')
 
     # Use a colormap to get different colors
-    cmap = plt.cm.get_cmap('cool', n_pendulums)
-    colors = [cmap(i) for i in range(n_pendulums)]
+    cmap = plt.colormaps.get_cmap('rainbow')
+    colors = [cmap(i / n_pendulums) for i in range(n_pendulums)]
 
     # Initialize the lines for the rods and the dots for the masses for each pendulum
     lines1 = []
@@ -280,6 +280,11 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
     # Update function for each frame
     def update(frame):
         for i in range(n_pendulums):
+            # Update trajectory data
+            x2_traj[i].append(x2[i][frame])
+            y2_traj[i].append(y2[i][frame])
+            trajectories[i].set_data(x2_traj[i], y2_traj[i])
+
             # First rod (pivot to first mass)
             x_data1 = [0, x1[i][frame]]
             y_data1 = [0, y1[i][frame]]
@@ -290,25 +295,20 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
             y_data2 = [y1[i][frame], y2[i][frame]]
             lines2[i].set_data(x_data2, y_data2)
 
-            # Update trajectory data
-            x2_traj[i].append(x2[i][frame])
-            y2_traj[i].append(y2[i][frame])
-            trajectories[i].set_data(x2_traj[i], y2_traj[i])
-
-        return lines1 + lines2 + trajectories
+        return trajectories + lines1 + lines2
 
     # Create the animation
     ani = animation.FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True,
                                   interval=1000 / fps)
 
-    Writer = animation.writers['ffmpeg']
+    '''Writer = animation.writers['ffmpeg']
     writer = Writer(fps=fps, metadata=dict(artist='Me'), bitrate=1800)
 
     # Save the animation as an MP4 file
-    ani.save('double_pendulum_animation.mp4', writer=writer)
+    ani.save('double_pendulum_animation.mp4', writer=writer)'''
 
     # Display the animation
-    #plt.show()
+    plt.show()
 
 
 t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)
