@@ -3,70 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Pendulum Simulation</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        .colormap-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .colormap-display {
+            width: 100px;
+            height: 20px;
+            margin-left: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <h1>Pendulum Simulation Parameters</h1>
-    <form method="POST" action="/export">
-        <table>
-            <tr>
-                <td><label for="n_pendulums">Number of Pendulums:</label></td>
-                <td><input type="number" id="n_pendulums" name="n_pendulums" required min="1" max="100" value="10"></td>
-            </tr>
-            <tr>
-                <td><label for="d_diff">Difference:</label></td>
-                <td><input type="number" step="0.000000001" id="d_diff" name="d_diff" required min="0.000000001" max="0.01" value="0.000001"></td>
-            </tr>
-            <tr>
-                <td><label for="t_max">Max Time:</label></td>
-                <td><input type="number" step="1" id="t_max" name="t_max" required min="1" max="25" value="15"></td>
-            </tr>
-            <tr>
-                <td><label for="g">Gravity (g):</label></td>
-                <td><input type="number" step="0.01" id="g" name="g" required value="9.81" min="0.1" max="24.79"></td>
-            </tr>
-            <tr>
-                <td><label for="m1">Mass 1:</label></td>
-                <td><input type="number" step="0.1" id="m1" name="m1" required min="0.1" max="20"  value="1"></td>
-            </tr>
-            <tr>
-                <td><label for="m2">Mass 2:</label></td>
-                <td><input type="number" step="0.1" id="m2" name="m2" required min="0.1" max="20" value="1"></td>
-            </tr>
-            <tr>
-                <td><label for="L1">Length 1:</label></td>
-                <td><input type="number" step="0.1" id="L1" name="L1" required min="0.1" max="2" value="1"></td>
-            </tr>
-            <tr>
-                <td><label for="L2">Length 2:</label></td>
-                <td><input type="number" step="0.1" id="L2" name="L2" required min="0.1" max="2" value="1"></td>
-            </tr>
-            <tr>
-                <td><label for="theta1">Theta 1:</label></td>
-                <td><input type="number" step="0.01" id="theta1" name="theta1" required min="-1.57" max="1.57" value="-0.12"></td>
-            </tr>
-            <tr>
-                <td><label for="theta2">Theta 2:</label></td>
-                <td><input type="number" step="0.01" id="theta2" name="theta2" required min="-1.57" max="1.57" value="0.21"></td>
-            </tr>
-        </table>
-        <input type="submit" value="Run Simulation">
-    </form>
+    <div class="container">
+        <header>
+            <img src="../static/logo.jpg" alt="Logo" class="logo">
+            <h1>Pendulum Simulation Parameters</h1>
+            <img src="../static/explanation.jpg" alt="Expl" class="expl" width="300px">
+        </header>
+        <main>
+            <form method="POST" action="/export">
+                <table>
+                    <tr>
+                        <td><label for="colormap">Colormap:</label></td>
+                        <td>
+                            <div class="colormap-container">
+                                <select id="colormap" name="colormap">
+                                    <option value="rainbow">Rainbow</option>
+                                    <option value="viridis">Viridis</option>
+                                    <option value="plasma">Plasma</option>
+                                    <option value="inferno">Inferno</option>
+                                    <option value="magma">Magma</option>
+                                    <option value="cividis">Cividis</option>
+                                    <option value="jet">Jet</option>
+                                    <option value="spring">Spring</option>
+                                    <option value="summer">Summer</option>
+                                    <option value="autumn">Autumn</option>
+                                    <option value="winter">Winter</option>
+                                    <option value="cool">Cool</option>
+                                    <option value="hot">Hot</option>
+                                </select>
+                                <div id="colormap-display" class="colormap-display"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="background">Background:</label></td>
+                        <td>
+                            <select id="background" name="background">
+                                <option value="white" style="background-color: white;">White</option>
+                                <option value="lightgreen" style="background-color: lightgreen;">Light Green</option>
+                                <option value="darkgreen" style="background-color: darkgreen;">Dark Green</option>
+                                <option value="cyan" style="background-color: cyan;">Cyan</option>
+                                <option value="purple" style="background-color: purple;">Purple</option>
+                                <option value="pink" style="background-color: magenta;">Pink</option>
+                                <option value="blue" style="background-color: blue;">Blue</option>
+                                <option value="red" style="background-color: red;">Red</option>
+                                <option value="orange" style="background-color: orange;">Orange</option>
+                                <option value="yellow" style="background-color: yellow;">Yellow</option>
+                                <option value="black" style="background-color: black; color: white;">Black</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="n_pendulums">Number of Pendulums:</label></td>
+                        <td><input type="number" id="n_pendulums" name="n_pendulums" required min="1" max="100" value="10"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="d_diff">Difference:</label></td>
+                        <td>
+                            <input type="range" id="d_diff_slider" name="d_diff_slider" min="0" max="100" value="50" oninput="updateSlider(this.value)">
+                            <span id="d_diff_value">0.000001</span>
+                            <input type="hidden" id="d_diff" name="d_diff" value="0.000001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="t_max">Max Time:</label></td>
+                        <td><input type="number" step="1" id="t_max" name="t_max" required min="5" max="20" value="15"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="g">Gravity (g):</label></td>
+                        <td><input type="number" step="0.01" id="g" name="g" required value="9.81" min="0.1" max="24.79"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="m1">Mass 1:</label></td>
+                        <td><input type="number" step="0.1" id="m1" name="m1" required min="0.1" max="20" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="m2">Mass 2:</label></td>
+                        <td><input type="number" step="0.1" id="m2" name="m2" required min="0.1" max="20" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="L1">Length 1:</label></td>
+                        <td><input type="number" step="0.1" id="L1" name="L1" required min="0.1" max="2" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="L2">Length 2:</label></td>
+                        <td><input type="number" step="0.1" id="L2" name="L2" required min="0.1" max="2" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="theta1">Theta 1:</label></td>
+                        <td><input type="number" step="0.001" id="theta1" name="theta1" required min="-1.57" max="1.57" value="-0.120"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="theta2">Theta 2:</label></td>
+                        <td><input type="number" step="0.001" id="theta2" name="theta2" required min="-1.57" max="1.57" value="0.210"></td>
+                    </tr>
+                </table>
+                <input type="submit" value="Run Simulation">
+            </form>
 
-    {% if result %}
-        <h2>Simulation Parameters:</h2>
-        <ul>
-            <li>Number of Pendulums: {{ result.n_pendulums }}</li>
-            <li>Damping Difference: {{ result.d_diff }}</li>
-            <li>Max Time: {{ result.t_max }}</li>
-            <li>Gravity: {{ result.g }}</li>
-            <li>Mass 1: {{ result.m1 }}</li>
-            <li>Mass 2: {{ result.m2 }}</li>
-            <li>Length 1: {{ result.L1 }}</li>
-            <li>Length 2: {{ result.L2 }}</li>
-            <li>Theta 1: {{ result.theta1 }}</li>
-            <li>Theta 2: {{ result.theta2 }}</li>
-        </ul>
-    {% endif %}
+
+            {% if result %}
+                <h2>Simulation Parameters:</h2>
+                <ul>
+                    <li>Number of Pendulums: {{ result.n_pendulums }}</li>
+                    <li>Damping Difference: {{ result.d_diff }}</li>
+                    <li>Max Time: {{ result.t_max }}</li>
+                    <li>Gravity: {{ result.g }}</li>
+                    <li>Mass 1: {{ result.m1 }}</li>
+                    <li>Mass 2: {{ result.m2 }}</li>
+                    <li>Length 1: {{ result.L1 }}</li>
+                    <li>Length 2: {{ result.L2 }}</li>
+                    <li>Theta 1: {{ result.theta1 }}</li>
+                    <li>Theta 2: {{ result.theta2 }}</li>
+                    <li>Colormap: {{ result.colormap }}</li>
+                    <li>Background: {{ result.background }}</li>
+                </ul>
+            {% endif %}
+        </main>
+    </div>
+    <br>
+    <script>
+        function updateSlider(value) {
+            var min = Math.log(0.0000001);
+            var max = Math.log(0.01);
+            var scale = (max - min) * (value / 100) + min;
+            var logValue = Math.exp(scale);
+            document.getElementById('d_diff_value').innerText = logValue.toFixed(9);
+            document.getElementById('d_diff').value = logValue;
+        }
+
+        function getRandomValue(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function setRandomTheta1() {
+            var minTheta1 = -0.6;
+            var maxTheta1 = 0.6;
+            var randomTheta1 = getRandomValue(minTheta1, maxTheta1);
+            document.getElementById('theta1').value = randomTheta1.toFixed(3);
+        }
+
+        function setRandomTheta2() {
+            var minTheta2 = -0.6;
+            var maxTheta2 = 0.6;
+            var randomTheta2 = getRandomValue(minTheta2, maxTheta2);
+            document.getElementById('theta2').value = randomTheta2.toFixed(3);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var initialSliderValue = document.getElementById('d_diff_slider').value;
+            updateSlider(initialSliderValue);
+            setRandomTheta1();
+            setRandomTheta2();
+            updateColormapDisplay();
+        });
+
+        const colormapSelect = document.getElementById('colormap');
+        const colormapDisplay = document.getElementById('colormap-display');
+
+        const colormapGradients = {
+            rainbow: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)',
+            viridis: 'linear-gradient(to right, #440154, #3b528b, #21918c, #5ec962, #fde725)',
+            plasma: 'linear-gradient(to right, #0d0887, #6a00a8, #b12a90, #e16462, #fca636)',
+            inferno: 'linear-gradient(to right, #000004, #320a5a, #781c6d, #bb3654, #f98c09, #fcffa4)',
+            magma: 'linear-gradient(to right, #000004, #2c115f, #721f81, #b63679, #f1605d, #fcfdbf)',
+            cividis: 'linear-gradient(to right, #00204c, #004d70, #006c8e, #19818d, #5aac82, #9ccb70, #dfee4b)',
+            jet: 'linear-gradient(to right, blue, cyan, yellow, red)',
+            spring: 'linear-gradient(to right, magenta, yellow)',
+            summer: 'linear-gradient(to right, green, yellow)',
+            autumn: 'linear-gradient(to right, red, orange, yellow)',
+            winter: 'linear-gradient(to right, blue, turquoise, green)',
+            cool: 'linear-gradient(to right, cyan, magenta)',
+            hot: 'linear-gradient(to right, black, red, orange, yellow, white)'
+        };
+
+        function updateColormapDisplay() {
+            const selectedColormap = colormapSelect.value;
+            colormapDisplay.style.background = colormapGradients[selectedColormap];
+        }
+
+        colormapSelect.addEventListener('change', updateColormapDisplay);
+    </script>
 </body>
 </html>

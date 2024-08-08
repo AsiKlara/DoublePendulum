@@ -4,27 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 
-def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
-    '''
-    # number of pendulums
-    n_pendulums = 10
-    # degree difference
-    d_diff = 0.000001
-    # simulation length
-    t_max = 15
-    # constants
-    g = -9.81  # gravitational acceleration
-    # masses
-    m1 = 1
-    m2 = 1
-    # lengths of pendulum
-    L1 = 1
-    L2 = 1
-
-    # initial conditions
-    # deflection
-    theta1 = -0.123
-    theta2 = 0.21'''
+def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background):
     g = -g
 
     # step
@@ -232,14 +212,15 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
             y2.append(y21)
         return x1, y1, x2, y2
 
-    def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
+    def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums, colormap, background):
         total_frames = n_steps
         fps = 1 / dt
 
         # Create figure and axis
-        fig, ax = plt.subplots(figsize=(4.5, 4.5))
-        ax.set_xlim(-2, 2)
-        ax.set_ylim(-2, 2)
+        fig, ax = plt.subplots(figsize=(5, 5))
+        fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
+        ax.set_xlim(-2.5, 2.5)
+        ax.set_ylim(-2.5, 2.5)
         ax.set_aspect('equal')
 
         # Hide the numbers on the axes
@@ -249,8 +230,22 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
         # Hide the axes
         ax.axis('off')
 
+        # Set the background color or image
+        if background == "white":
+            fig.patch.set_facecolor('white')
+        elif background == "black":
+            fig.patch.set_facecolor('black')
+        else:
+            try:
+                # Load and display the background image
+                img = plt.imread(f'./static/{background}.jpg')
+                ax.imshow(img, extent=[-2.5, 2.5, -2.5, 2.5], aspect='auto')
+            except FileNotFoundError:
+                print(f"Background image for '{background}' not found. Using default white background.")
+                fig.patch.set_facecolor('white')
+
         # Use a colormap to get different colors
-        cmap = plt.colormaps.get_cmap('rainbow')
+        cmap = plt.colormaps.get_cmap(colormap)
         colors = [cmap(i / n_pendulums) for i in range(n_pendulums)]
 
         # Initialize the lines for the rods and the dots for the masses for each pendulum
@@ -309,11 +304,8 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
         # Save the animation as an MP4 file
         ani.save('double_pendulum_animation.mp4', writer=writer)
 
-        # Display the animation
-        # plt.show()
-
     t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)
     x1, y1, x2, y2 = back_to_cartesian(theta1_arr, theta2_arr, L1, L2, n_steps, n_pendulums)
-    animace(x1, y1, x2, y2, n_steps, dt, n_pendulums)
+    animace(x1, y1, x2, y2, n_steps, dt, n_pendulums, colormap, background)
 
 
