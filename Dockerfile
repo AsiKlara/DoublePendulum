@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port your app runs on
-# EXPOSE 8000
+EXPOSE 8000
 
 # Define the command to run your app
-CMD ["celery", "-A", "celery_worker.celery", "worker", "--loglevel=info"]
+CMD ["gunicorn", "-w", "1", "app:app"]
