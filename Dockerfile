@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 8000
 
 # Define the command to run your app
-CMD ["gunicorn", "-w", "1", "app:app"]
+CMD ["gunicorn", "-w", "1", "app:app", "-timeout", "300"]
