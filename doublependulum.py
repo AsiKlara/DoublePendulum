@@ -231,18 +231,17 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
         ax.axis('off')
 
         # Set the background color or image
-        if background == "white":
-            fig.patch.set_facecolor('white')
-        elif background == "black":
-            fig.patch.set_facecolor('black')
-        else:
+        fig.patch.set_facecolor(f'{background}')
+
+        # taking out, cause it takes too much time with img background
+        '''else:
             try:
                 # Load and display the background image
                 img = plt.imread(f'./static/{background}.jpg')
                 ax.imshow(img, extent=[-2.5, 2.5, -2.5, 2.5], aspect='auto')
             except FileNotFoundError:
                 print(f"Background image for '{background}' not found. Using default white background.")
-                fig.patch.set_facecolor('white')
+                fig.patch.set_facecolor('white')'''
 
         # Use a colormap to get different colors
         cmap = plt.colormaps.get_cmap(colormap)
