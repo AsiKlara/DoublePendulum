@@ -16,10 +16,6 @@ def post_ipfs():
     # The path to the video file you want to upload
     file_path = f'./{name}'
 
-    # calculate cid
-    cid = cid_sha256_hash(open(file_path, 'rb').read())
-    print(cid)
-
     # Open the file in binary mode and prepare it for upload
     with open(file_path, 'rb') as file:
         headers_upload = {
@@ -81,46 +77,9 @@ def post_ipfs():
     headers = {
         "Authorization": authentication  # Replace :credentials with actual base64-encoded credentials
     }
-    '''cid = None
-    n = 0
-    while cid is None and n <= 5:
-        # Send the GET request
-        time.sleep(5)
-        response = requests.get(url_file, headers=headers)
-        data_dict2 = json.loads(response.text)
-        cid = data_dict2["data"]["CID"]
-        n += 1
-    print(f"first: {cid}")'''
-    return cid
 
 
-def post_json_ipfs(cid):
-    print(cid)
-    # create json metadata
-    metadata = """
-        {{
-          "name": "Double Pendulum",
-          "description": "",
-          "image": "ipfs://{0}",
-          "attributes": [
-            {{
-              "trait_type": "Color",
-              "value": "Blue"
-            }},
-            {{
-              "trait_type": "Size",
-              "value": "Large"
-            }}
-          ]
-        }}
-        """.format(cid)
-
-    metadata_json = json.dumps(metadata)
-
-    # calculate cid
-    cid2 = cid_sha256_hash(metadata_json.encode('utf-8'))
-    print(cid2)
-
+def post_json_ipfs(metadata_json):
     headers_upload2 = {
         "Authorization": authentication,
         "Content-Type": "application/json"
@@ -169,18 +128,38 @@ def post_json_ipfs(cid):
         "Authorization": authentication
     }
 
-    '''cid2 = None
-    n = 0
-    while cid2 is None and n <= 5:
-        # Send the GET request
-        time.sleep(5)
-        response = requests.get(url_file, headers=headers)
-        data_dict2 = json.loads(response.text)
-        cid2 = data_dict2["data"]["CID"]
-        n += 1'''
 
-    # print(cid2)
-    return cid2
+def get_cid():
+    name = "double_pendulum_animation.mp4"
 
+    # The path to the video file you want to upload
+    file_path = f'./{name}'
 
+    # calculate cid
+    cid = cid_sha256_hash(open(file_path, 'rb').read())
+    print(cid)
 
+    metadata = """
+            {{
+              "name": "Double Pendulum",
+              "description": "",
+              "image": "ipfs://{0}",
+              "attributes": [
+                {{
+                  "trait_type": "Color",
+                  "value": "Blue"
+                }},
+                {{
+                  "trait_type": "Size",
+                  "value": "Large"
+                }}
+              ]
+            }}
+            """.format(cid)
+
+    metadata_json = json.dumps(metadata)
+
+    # calculate cid
+    cid2 = cid_sha256_hash(metadata_json.encode('utf-8'))
+    print(cid2)
+    return cid2, metadata_json

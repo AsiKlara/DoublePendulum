@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, send_from_directory
-from api import post_ipfs, post_json_ipfs
+from api import post_ipfs, post_json_ipfs, get_cid
 from doublependulum import run_simulation
 from set_metadata import set_metadata
 import os
@@ -17,7 +17,9 @@ def index():
 
 @app.route("/mint_nft", methods=["POST"])
 def mint_nft():
-    cid = post_json_ipfs(post_ipfs())
+    cid, metadata_json = get_cid()
+    post_ipfs()
+    post_json_ipfs(metadata_json)
 
     return render_template("index.html", cid=cid, video=True, wsendpoint=wsendpoint, collectionid=collectionid)
 
