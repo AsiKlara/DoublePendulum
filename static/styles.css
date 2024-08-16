@@ -94,6 +94,7 @@ input[type="submit"], button {
 
 input[type="submit"]:disabled{
     background-color: gray;
+    cursor: not-allowed;
 }
 
 input[type="submit"]:hover:enabled, button:hover {

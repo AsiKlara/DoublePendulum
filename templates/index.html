@@ -122,13 +122,29 @@
                         <td><input type="number" step="0.001" id="theta2" name="theta2" required min="-1.57" max="1.57" value="0.210"></td>
                     </tr>
                 </table>
-                <input type="submit"  value="Run Simulation">
+                {%if video%}
+                    <input type="submit"  value="Run Simulation" disabled>
+                {%else%}
+                    <input type="submit"  value="Run Simulation">
+                {%endif%}
+            </form>
+            <form method="POST" action="/save" onsubmit="this.querySelector('input[type=submit]').disabled=true;">
+                {%if video%}
+                    <input type="submit" value="Download video">
+                {%else%}
+                    <input type="submit" value="Download video" disabled>
+                {%endif%}
             </form>
             <form method="POST" id="mint_button" action="/mint_nft" onsubmit="this.querySelector('input[type=submit]').disabled=true;">
-                <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)">
+                {%if video%}
+                    <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)">
+                {%else%}
+                    <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)" disabled>
+                {%endif%}
             </form>
             <script>
                 // getting cid from python
+                cons video = "{{video}}"
                 const cid = "{{cid}}"
                 const wsEndpoint = "wss://rococo-asset-hub-rpc.polkadot.io"
                 const collectionId = 314
@@ -168,7 +184,7 @@
                     const accountInfo = await api.query.system.account(SENDER)
 
                     if (accountInfo.data.free < 10000000000){
-                        document.getElementById("mint_button").innerHTML = "Not enough DOTs :(";
+                        document.getElementById("mint_button").innerHTML = "Not enough DOTs :( (you need at least 1 DOT)";
                         return
                     }
 

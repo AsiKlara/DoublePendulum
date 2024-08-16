@@ -8,14 +8,14 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', cid=None)
+    return render_template('index.html', cid=None, video=False)
 
 
 @app.route("/mint_nft", methods=["POST"])
 def mint_nft():
     cid = post_json_ipfs(post_ipfs())
 
-    return render_template("index.html", cid=cid)
+    return render_template("index.html", cid=cid, video=True)
 
 
 @app.route('/export', methods=['POST'])
@@ -35,7 +35,11 @@ def export():
 
     # Run the simulation with the provided parameters and colormap
     run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background)
+    return render_template("index.html", cid=None, video=True)
 
+
+@app.route('/save', methods=['POST'])
+def save():
     return send_from_directory(".", 'double_pendulum_animation.mp4', as_attachment=True)
 
 
