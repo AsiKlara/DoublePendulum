@@ -1,4 +1,4 @@
-import substrateinterface as s
+
 from substrateinterface import SubstrateInterface, Keypair
 import os
 
