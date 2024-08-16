@@ -196,58 +196,50 @@
                     const newItemId = collection.value.items
                     console.log("new itemId: " + newItemId.toString())
 
-                    const txs = [
-                    //NFT minting part
-                    api.tx.nfts.mint(
+
+                    //NFT minting
+                    const mint = api.tx.nfts.mint(
                         collectionId,
                         newItemId,
                         SENDER,
                         [0, 2000000000], // 0.2 DOT
-                    ),
+                    )
 
-                    //metadata
-                    api.tx.nfts.setMetadata(
-                        collectionId,
-                        newItemId,
-                        cid,
-                    )]
 
                     // calling more transactions in one (mint and setting metadata)
-                    await api.tx.utility
-                          .batch(txs)
-                          .signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
-                                if (status.isInBlock || status.isFinalized) {
-                                  fetch("/set_nft_metadata", {
-                                    method:"POST",
-                                    body: JSON.stringify({
-                                        itemId: newItemId.toHuman(),
-                                        cid: cid
-                                        }),
-                                    headers: {
-                                        "Content-type": "application/json; charset=UTF-8"
-                                        }
-                                    })
-                                  events
-                                    // find/filter for failed events
-                                    .filter(({ event }) =>
-                                      api.events.system.ExtrinsicFailed.is(event)
-                                    )
-                                    // we know that data for system.ExtrinsicFailed is
-                                    // (DispatchError, DispatchInfo)
-                                    .forEach(({ event: { data: [error, info] } }) => {
-                                      if (error.isModule) {
-                                        // for module errors, we have the section indexed, lookup
-                                        const decoded = api.registry.findMetaError(error.asModule);
-                                        const { docs, method, section } = decoded;
-
-                                        console.log(`${section}.${method}: ${docs.join(' ')}`);
-                                      } else {
-                                        // Other, CannotLookup, BadOrigin, no extra info
-                                        console.log(error.toString());
-                                      }
-                                    });
+                    await mint.signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
+                        if (status.isInBlock || status.isFinalized) {
+                          fetch("/set_nft_metadata", {
+                            method:"POST",
+                            body: JSON.stringify({
+                                itemId: newItemId.toHuman(),
+                                cid: cid
+                                }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
                                 }
-                              });
+                            })
+                          events
+                            // find/filter for failed events
+                            .filter(({ event }) =>
+                              api.events.system.ExtrinsicFailed.is(event)
+                            )
+                            // we know that data for system.ExtrinsicFailed is
+                            // (DispatchError, DispatchInfo)
+                            .forEach(({ event: { data: [error, info] } }) => {
+                              if (error.isModule) {
+                                // for module errors, we have the section indexed, lookup
+                                const decoded = api.registry.findMetaError(error.asModule);
+                                const { docs, method, section } = decoded;
+
+                                console.log(`${section}.${method}: ${docs.join(' ')}`);
+                              } else {
+                                // Other, CannotLookup, BadOrigin, no extra info
+                                console.log(error.toString());
+                              }
+                            });
+                        }
+                      });
 
                 }
 
