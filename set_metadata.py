@@ -12,8 +12,8 @@ def set_metadata(item_id, cid):
     keypair = Keypair.create_from_uri(os.getenv("METADATASECRETKEY"))
 
     call = substrate.compose_call(call_module="Nfts", call_function="set_metadata", call_params={
-        "collection": collectionid,
-        "item": item_id,
+        "collection": int(collectionid),
+        "item": int(item_id),
         "data": f"ipfs://{cid}"
     })
 
