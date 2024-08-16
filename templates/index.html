@@ -220,7 +220,7 @@
                                   fetch("/set_nft_metadata", {
                                     method:"POST",
                                     body: JSON.stringify({
-                                        itemId: newItemId,
+                                        itemId: newItemId.toHuman(),
                                         cid: cid
                                         }),
                                     headers: {
