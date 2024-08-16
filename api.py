@@ -1,7 +1,7 @@
 import requests
 import json
-import time
 import os
+from ipfs_cid import cid_sha256_hash
 
 bucketuuid = os.getenv("BUCKETUUID")
 authentication = os.getenv("AUTHENTICATION")
@@ -15,6 +15,10 @@ def post_ipfs():
 
     # The path to the video file you want to upload
     file_path = f'./{name}'
+
+    # calculate cid
+    cid = cid_sha256_hash(open(file_path, 'rb').read())
+    print(cid)
 
     # Open the file in binary mode and prepare it for upload
     with open(file_path, 'rb') as file:
@@ -77,7 +81,7 @@ def post_ipfs():
     headers = {
         "Authorization": authentication  # Replace :credentials with actual base64-encoded credentials
     }
-    cid = None
+    '''cid = None
     n = 0
     while cid is None and n <= 5:
         # Send the GET request
@@ -86,7 +90,7 @@ def post_ipfs():
         data_dict2 = json.loads(response.text)
         cid = data_dict2["data"]["CID"]
         n += 1
-    print(f"first: {cid}")
+    print(f"first: {cid}")'''
     return cid
 
 
@@ -112,6 +116,10 @@ def post_json_ipfs(cid):
         """.format(cid)
 
     metadata_json = json.dumps(metadata)
+
+    # calculate cid
+    cid2 = cid_sha256_hash(metadata_json.encode('utf-8'))
+    print(cid2)
 
     headers_upload2 = {
         "Authorization": authentication,
@@ -161,7 +169,7 @@ def post_json_ipfs(cid):
         "Authorization": authentication
     }
 
-    cid2 = None
+    '''cid2 = None
     n = 0
     while cid2 is None and n <= 5:
         # Send the GET request
@@ -169,8 +177,10 @@ def post_json_ipfs(cid):
         response = requests.get(url_file, headers=headers)
         data_dict2 = json.loads(response.text)
         cid2 = data_dict2["data"]["CID"]
-        n += 1
+        n += 1'''
 
     # print(cid2)
     return cid2
+
+
 
