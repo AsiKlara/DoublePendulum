@@ -2,20 +2,31 @@
 from flask import Flask, render_template, request, send_from_directory
 from api import post_ipfs, post_json_ipfs
 from doublependulum import run_simulation
+from set_metadata import set_metadata
+import os
 
 app = Flask(__name__)
+wsEndpoint = os.getenv("WSENDPOINT")
+collectionId = os.getenv("COLLECTIONID")
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', cid=None, video=False)
+    return render_template('index.html', cid=None, video=False, wsendpoint=wsendpoint, collectionid=collectionid)
 
 
 @app.route("/mint_nft", methods=["POST"])
 def mint_nft():
     cid = post_json_ipfs(post_ipfs())
 
-    return render_template("index.html", cid=cid, video=True)
+    return render_template("index.html", cid=cid, video=True, wsendpoint=wsendpoint, collectionid=collectionid)
+
+
+@app.route("/set_nft_metadata", methods=["POST"])
+def set_nft_metadata():
+    item_id = request.form['itemId']
+    cid = request.form['cid']
+    set_metadata(item_id, cid)
 
 
 @app.route('/export', methods=['POST'])
@@ -35,7 +46,7 @@ def export():
 
     # Run the simulation with the provided parameters and colormap
     run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background)
-    return render_template("index.html", cid=None, video=True)
+    return render_template("index.html", cid=None, video=True, wsendpoint=wsendpoint, collectionid=collectionid)
 
 
 @app.route('/save', methods=['POST'])

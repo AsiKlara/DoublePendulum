@@ -79,7 +79,7 @@
                     </tr>
                     <tr>
                         <td><label for="n_pendulums">Number of Pendulums:</label></td>
-                        <td><input type="number" id="n_pendulums" name="n_pendulums" required min="1" max="30" value="10"></td>
+                        <td><input type="number" id="n_pendulums" name="n_pendulums" required min="1" max="30" value="2"></td>
                     </tr>
                     <tr>
                         <td><label for="d_diff">Difference:</label></td>
@@ -146,8 +146,8 @@
                 // getting cid from python
                 cons video = "{{video}}"
                 const cid = "{{cid}}"
-                const wsEndpoint = "wss://rococo-asset-hub-rpc.polkadot.io"
-                const collectionId = 314
+                const wsEndpoint = "{{wsEndpoint}}"
+                const collectionId = "{{collectionId}}"
 
                 async function mint() {
                     // import from CDN (the links at the top)
@@ -217,6 +217,16 @@
                           .batch(txs)
                           .signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
                                 if (status.isInBlock || status.isFinalized) {
+                                  fetch("/set_nft_metadata", {
+                                    method:"POST",
+                                    body: JSON.stringify({
+                                        itemId: newItemId'
+                                        cid: cid
+                                        }),
+                                    headers: {
+                                        "Content-type": "application/json; charset=UTF-8"
+                                        }
+                                    })
                                   events
                                     // find/filter for failed events
                                     .filter(({ event }) =>
