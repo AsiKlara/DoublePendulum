@@ -34,7 +34,7 @@
             <img src="../static/explanation.jpg" alt="Expl" class="expl" width="300px">
         </header>
         <main>
-            <form method="POST" action="/export">
+            <form method="POST" action="/export" onsubmit="this.querySelector('input[type=submit]').disabled=true;">
                 <table>
                     <tr>
                         <td><label for="colormap">Colormap:</label></td>
@@ -122,24 +122,24 @@
                         <td><input type="number" step="0.001" id="theta2" name="theta2" required min="-1.57" max="1.57" value="0.210"></td>
                     </tr>
                 </table>
-                <input type="submit" value="Run Simulation">
+                <input type="submit"  value="Run Simulation">
             </form>
-            <form method="POST" action="/mint_nft" >
+            <form method="POST" action="/mint_nft">
                 <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)">
             </form>
             <script>
+                // getting cid from python
                 const cid = "{{cid}}"
+                const wsEndpoint = "wss://rococo-asset-hub-rpc.polkadot.io"
+                const collectionId = 314
 
                 async function mint() {
+                    // import from CDN (the links at the top)
                     const { web3Accounts, web3Enable, web3FromAddress } = polkadotExtensionDapp;
                     const { WsProvider, ApiPromise } = polkadotApi
 
-                    const wsEndpoint = "wss://rococo-asset-hub-rpc.polkadot.io"
-                    const collectionId = 314
-                    console.log(cid)
-
                     // Enable Polkadot extension
-                    const allInjected = await web3Enable('my cool dapp');
+                    const allInjected = await web3Enable('Double Pendulum');
 
                     if (allInjected.length === 0) {
                         console.log('No extension found');
@@ -160,14 +160,14 @@
                     // Find injector for the address
                     const injector = await web3FromAddress(SENDER);
 
-                    // Initialize API
+                    // Initialize websocket API
                     const wsProvider = new WsProvider(wsEndpoint);
                     const api = await ApiPromise.create({ provider: wsProvider });
-                    console.log(api.genesisHash.toHex());
 
                     //get collection info
                     const collection = await api.query.nfts.collection(collectionId)
 
+                    // get new item id
                     const newItemId = collection.value.items
                     console.log("new itemId: " + newItemId.toString())
 
@@ -177,7 +177,7 @@
                         collectionId,
                         newItemId,
                         SENDER,
-                        [0, 2000000000], // No witness data
+                        [0, 2000000000], // 0.2 DOT
                     ),
 
                     //metadata
@@ -187,6 +187,7 @@
                         cid,
                     )]
 
+                    // calling more transactions in one (mint and setting metadata)
                     await api.tx.utility
                           .batch(txs)
                           .signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
@@ -246,6 +247,8 @@
     </div>
     <br>
     <script>
+        // These are for visuals such as slider or colormaps
+
         function updateSlider(value) {
             var min = Math.log(0.0000001);
             var max = Math.log(0.01);

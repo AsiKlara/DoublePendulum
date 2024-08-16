@@ -38,7 +38,11 @@ def post_ipfs():
 
         # Send the POST request with the file
         response = requests.post(url_upload, headers=headers_upload, data=json_data)
-
+    print("ahoj")
+    print(response.text)
+    if not response.ok:
+        print("baf")
+        print(response.text)
     # to dict
     data_dict = json.loads(response.text)
 
