@@ -6,8 +6,8 @@ from set_metadata import set_metadata
 import os
 
 app = Flask(__name__)
-wsEndpoint = os.getenv("WSENDPOINT")
-collectionId = os.getenv("COLLECTIONID")
+wsendpoint = os.getenv("WSENDPOINT")
+collectionid = os.getenv("COLLECTIONID")
 
 
 @app.route('/', methods=['GET', 'POST'])
