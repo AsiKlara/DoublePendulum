@@ -124,7 +124,7 @@
                 </table>
                 <input type="submit"  value="Run Simulation">
             </form>
-            <form method="POST" action="/mint_nft">
+            <form method="POST" id="mint_button" action="/mint_nft" onsubmit="this.querySelector('input[type=submit]').disabled=true;">
                 <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)">
             </form>
             <script>
@@ -163,6 +163,14 @@
                     // Initialize websocket API
                     const wsProvider = new WsProvider(wsEndpoint);
                     const api = await ApiPromise.create({ provider: wsProvider });
+
+                    // check if user has enough DOTs
+                    const accountInfo = await api.query.system.account(SENDER)
+
+                    if (accountInfo.data.free < 10000000000){
+                        document.getElementById("mint_button").innerHTML = "Not enough DOTs :(";
+                        return
+                    }
 
                     //get collection info
                     const collection = await api.query.nfts.collection(collectionId)
