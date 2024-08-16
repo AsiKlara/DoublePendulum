@@ -30,6 +30,7 @@ def set_nft_metadata():
     item_id = data.get('itemId')
     cid = data.get('cid')
     set_metadata(item_id, cid)
+    return 200
 
 
 @app.route('/export', methods=['POST'])
