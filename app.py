@@ -24,8 +24,11 @@ def mint_nft():
 
 @app.route("/set_nft_metadata", methods=["POST"])
 def set_nft_metadata():
-    item_id = request.form['itemId']
-    cid = request.form['cid']
+    data = request.get_json()
+
+    # Extract itemId and cid from the JSON data
+    item_id = data.get('itemId')
+    cid = data.get('cid')
     set_metadata(item_id, cid)
 
 
