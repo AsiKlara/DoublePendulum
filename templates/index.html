@@ -173,6 +173,8 @@
 
                     const cid = await response.text();
 
+                    console.log("cid received: " + cid)
+
                     // import from CDN (the links at the top)
                     const { web3Accounts, web3Enable, web3FromAddress } = polkadotExtensionDapp;
                     const { WsProvider, ApiPromise } = polkadotApi
