@@ -19,18 +19,18 @@ def index():
 
 @app.route("/mint_nft", methods=["POST"])
 def mint_nft():
-    n_pendulums = int(request.form['n_pendulums'])
-    d_diff = float(request.form['d_diff'])
-    t_max = float(request.form['t_max'])
-    g = float(request.form['g'])
-    m1 = float(request.form['m1'])
-    m2 = float(request.form['m2'])
-    L1 = float(request.form['L1'])
-    L2 = float(request.form['L2'])
-    theta1 = float(request.form['theta1'])
-    theta2 = float(request.form['theta2'])
-    colormap = request.form['colormap']
-    background = request.form['background']
+    data = request.get_json()
+
+    n_pendulums = data.get('n_pendulums')
+    d_diff = data.get('d_diff')
+    t_max = data.get('t_max')
+    g = data.get('g')
+    m1 = data.get('m1')
+    m2 = data.get('m2')
+    L1 = data.get('L1')
+    L2 = data.get('L2')
+    theta1 = data.get('theta1')
+    theta2 = data.get('theta2')
 
     cid = post_json_ipfs(post_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
 
