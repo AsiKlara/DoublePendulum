@@ -147,7 +147,9 @@
                 const collectionId = "{{collectionid}}"
 
                 async function mint() {
-                    this.querySelector('input[type=submit]').disabled=true;
+                    document.getElementById("mint_button").disabled=true;
+
+                    document.getElementById("mint_button").innerHTML = "Posting to IPFS..."
                     // get all initial conditions back to python
                     const response = fetch("/mint_nft", {
                         method:"POST",
@@ -217,6 +219,7 @@
                     const newItemId = collection.value.items
                     console.log("new itemId: " + newItemId.toString())
 
+                    document.getElementById("mint_button").innerHTML = "Minting..."
 
                     //NFT minting
                     const mint = api.tx.nfts.mint(
@@ -230,6 +233,8 @@
                     // calling more transactions in one (mint and setting metadata)
                     await mint.signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
                         if (status.isInBlock) {
+
+                            document.getElementById("mint_button").innerHTML = "Setting metadata..."
                           fetch("/set_nft_metadata", {
                             method:"POST",
                             body: JSON.stringify({
@@ -240,25 +245,8 @@
                                 "Content-type": "application/json; charset=UTF-8"
                                 }
                             })
-                          events
-                            // find/filter for failed events
-                            .filter(({ event }) =>
-                              api.events.system.ExtrinsicFailed.is(event)
-                            )
-                            // we know that data for system.ExtrinsicFailed is
-                            // (DispatchError, DispatchInfo)
-                            .forEach(({ event: { data: [error, info] } }) => {
-                              if (error.isModule) {
-                                // for module errors, we have the section indexed, lookup
-                                const decoded = api.registry.findMetaError(error.asModule);
-                                const { docs, method, section } = decoded;
 
-                                console.log(`${section}.${method}: ${docs.join(' ')}`);
-                              } else {
-                                // Other, CannotLookup, BadOrigin, no extra info
-                                console.log(error.toString());
-                              }
-                            });
+                            document.getElementById("mint_button").innerHTML = "Done :)"
                         }
                       });
 
