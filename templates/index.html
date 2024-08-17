@@ -150,6 +150,27 @@
                 const collectionId = "{{collectionid}}"
 
                 async function mint() {
+                    // get all initial conditions back to python
+                    fetch("/mint_nft", {
+                        method:"POST",
+                        body: JSON.stringify({
+                                // n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
+                                n_pendulums: document.getElementById('n_pendulums').value,
+                                d_diff: document.getElementById('d_diff').value,
+                                t_max: document.getElementById('t_max').value,
+                                g: document.getElementById('g').value,
+                                m1: document.getElementById('m1').value,
+                                m2: document.getElementById('m2').value,
+                                L1: document.getElementById('L1').value,
+                                L2: document.getElementById('L2').value,
+                                theta1: document.getElementById('theta1').value,
+                                theta2: document.getElementById('theta2').value
+                            }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+
                     // import from CDN (the links at the top)
                     const { web3Accounts, web3Enable, web3FromAddress } = polkadotExtensionDapp;
                     const { WsProvider, ApiPromise } = polkadotApi
