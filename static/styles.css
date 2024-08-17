@@ -92,12 +92,12 @@ input[type="submit"], button {
     margin-bottom: 20px;
 }
 
-input[type="submit"]:disabled{
+input[type="submit"]:disabled, button:disabled{
     background-color: gray;
     cursor: not-allowed;
 }
 
-input[type="submit"]:hover:enabled, button:hover {
+input[type="submit"]:hover:enabled, button:hover:disabled {
     background-color: #e67e22;
 }
 

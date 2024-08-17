@@ -237,7 +237,7 @@
                         if (status.isInBlock) {
                           document.getElementById("mint_button").innerHTML = "Setting metadata..."
                           console.log("setting metadata")
-                          fetch("/set_nft_metadata", {
+                          await fetch("/set_nft_metadata", {
                             method:"POST",
                             body: JSON.stringify({
                                 itemId: newItemId.toHuman(),
