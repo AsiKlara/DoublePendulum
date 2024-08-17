@@ -303,6 +303,12 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
         # Save the animation as an MP4 file
         ani.save('double_pendulum_animation.mp4', writer=writer)
 
+        frame_to_save = int(4.95 * fps)  # Frame at 5 second
+        # Update the plot for all frames up to the frame_to_save
+        for frame in range(frame_to_save + 1):
+            update(frame)
+        plt.savefig(f'double_pendulum_thumbnail.png', bbox_inches='tight', pad_inches=0)  # Save the frame as an image
+
     t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)
     x1, y1, x2, y2 = back_to_cartesian(theta1_arr, theta2_arr, L1, L2, n_steps, n_pendulums)
     animace(x1, y1, x2, y2, n_steps, dt, n_pendulums, colormap, background)

@@ -306,7 +306,14 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
                                   interval=1000 / fps)
 
     # Display the animation
-    plt.show()
+    # plt.show()
+
+    frame_to_save = int(4.95 * fps)  # Frame at 5 seconds
+
+    # Update the plot for all frames up to the frame_to_save
+    for frame in range(frame_to_save + 1):
+        update(frame)
+    plt.savefig(f'double_pendulum_thumbnail.png', bbox_inches='tight', pad_inches=0)  # Save the frame as an image
 
 
 t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)

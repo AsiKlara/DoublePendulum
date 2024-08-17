@@ -91,8 +91,84 @@ def post_ipfs():
     return cid
 
 
-def post_json_ipfs(cid, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
-    print(cid)
+def post_img_ipfs():
+    name = "double_pendulum_thumbnail.png"
+
+    # The path to the video file you want to upload
+    file_path = f'./{name}'
+
+    # Open the file in binary mode and prepare it for upload
+    with open(file_path, 'rb') as file:
+        headers_upload = {
+            "Authorization": authentication,
+            "Content-Type": "application/json"
+        }
+
+        # Define the JSON data payload
+        data = {
+            "files": [
+                {
+                    "fileName": name,
+                    "contentType": "image/png"
+                }
+            ]
+        }
+
+        # Convert the data payload to a JSON string
+        json_data = json.dumps(data)
+
+        # Send the POST request with the file
+        response = requests.post(url_upload, headers=headers_upload, data=json_data)
+
+    # to dict
+    data_dict = json.loads(response.text)
+
+    # Define the endpoint URL
+    url_up = data_dict["data"]["files"][0]["url"]
+
+    headers_up = {
+        "Content-Type": "image/png"
+    }
+
+    # Open the file in binary mode and send the PUT request
+    with open(file_path, 'rb') as file:
+        response = requests.put(url_up, headers=headers_up, data=file)
+
+        print(response)
+
+    url_end = f'https://api.apillon.io/storage/buckets/{bucketuuid}/upload/{data_dict["data"]["sessionUuid"]}/end'
+
+    # If there's any data to be sent with the request, define it here (for example, {})
+    # In this case, no data is specified, so we send an empty JSON object.
+    data = {}
+
+    # Send the POST request
+    response2 = requests.post(url_end, headers=headers_upload, json=data)
+
+    print(response2)
+
+    # Define the endpoint URL with bucket UUID and file UUID
+    url_file = f'https://api.apillon.io/storage/buckets/{bucketuuid}/files/{data_dict["data"]["files"][0]["fileUuid"]}'
+
+    # Headers for the GET request
+    headers = {
+        "Authorization": authentication  # Replace :credentials with actual base64-encoded credentials
+    }
+    cid = None
+    n = 0
+    while cid is None and n <= 10:
+        # Send the GET request
+        time.sleep(5)
+        response = requests.get(url_file, headers=headers)
+        data_dict2 = json.loads(response.text)
+        cid = data_dict2["data"]["CID"]
+        n += 1
+    print(f"first: {cid}")
+    return cid
+
+
+def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
+    print(cid_img)
     # create json metadata
     # get initial conditions to metadata
     metadata = """
@@ -115,6 +191,7 @@ def post_json_ipfs(cid, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, t
           
           I hope You are enjoying cute animation <3.",
           "image": "ipfs://{0}",
+          "video": "ipfs://{0}",
           "attributes": [
             {{
               "trait_type": "Number of Pendulums",
@@ -158,7 +235,7 @@ def post_json_ipfs(cid, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, t
             }}
           ]
         }}
-        """.format(cid, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
+        """.format(cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
 
     metadata_json = json.dumps(metadata)
 

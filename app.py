@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, send_from_directory
-from api import post_ipfs, post_json_ipfs
+from api import post_ipfs, post_json_ipfs, post_img_ipfs
 from doublependulum import run_simulation
 from set_metadata import set_metadata
 import os
@@ -32,7 +32,7 @@ def mint_nft():
     theta1 = data.get('theta1')
     theta2 = data.get('theta2')
 
-    cid = post_json_ipfs(post_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
+    cid = post_json_ipfs(post_ipfs(), post_img_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
 
     return cid, 200
 
