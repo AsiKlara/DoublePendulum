@@ -135,23 +135,21 @@
                     <input type="submit" value="Download video" disabled>
                 {%endif%}
             </form>
-            <form method="POST" id="mint_button" action="/mint_nft" onsubmit="this.querySelector('input[type=submit]').disabled=true;">
                 {%if video%}
-                    <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)">
+                    <button id="mint_button" onclick="mint">Mint NFT (0.2 DOT ~ 1 USD)</button>
                 {%else%}
-                    <input type="submit" value="Mint NFT (0.2 DOT ~ 1 USD)" disabled>
+                    <button disabled>Mint NFT (0.2 DOT ~ 1 USD)</button>
                 {%endif%}
-            </form>
             <script>
                 // getting cid from python
                 const video = "{{video}}"
-                const cid = "{{cid}}"
                 const wsEndpoint = "{{wsendpoint}}"
                 const collectionId = "{{collectionid}}"
 
                 async function mint() {
+                    this.querySelector('input[type=submit]').disabled=true;
                     // get all initial conditions back to python
-                    fetch("/mint_nft", {
+                    const response = fetch("/mint_nft", {
                         method:"POST",
                         body: JSON.stringify({
                                 // n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
@@ -170,6 +168,8 @@
                             "Content-type": "application/json; charset=UTF-8"
                             }
                         })
+
+                    const cid = await response.text();
 
                     // import from CDN (the links at the top)
                     const { web3Accounts, web3Enable, web3FromAddress } = polkadotExtensionDapp;

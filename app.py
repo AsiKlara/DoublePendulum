@@ -34,9 +34,7 @@ def mint_nft():
 
     cid = post_json_ipfs(post_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
 
-    return render_template("index.html", cid=cid, video=True, wsendpoint=wsendpoint,
-                           collectionid=collectionid, n_pendulums=n_pendulums, d_diff=d_diff, t_max=t_max, g=g, m1=m1,
-                           m2=m2, L1=L1, L2=L2, theta1=theta1, theta2=theta2)
+    return cid, 200
 
 
 @app.route("/set_nft_metadata", methods=["POST"])
