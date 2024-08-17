@@ -233,7 +233,7 @@
 
 
                     // calling more transactions in one (mint and setting metadata)
-                    await mint.signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
+                    await mint.signAndSend(SENDER, { signer: injector.signer }, async ({ status, events }) => {
                         if (status.isInBlock) {
                           document.getElementById("mint_button").innerHTML = "Setting metadata..."
                           console.log("setting metadata")
