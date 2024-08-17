@@ -208,7 +208,7 @@
 
                     // calling more transactions in one (mint and setting metadata)
                     await mint.signAndSend(SENDER, { signer: injector.signer }, ({ status, events }) => {
-                        if (status.isInBlock || status.isFinalized) {
+                        if (status.isInBlock) {
                           fetch("/set_nft_metadata", {
                             method:"POST",
                             body: JSON.stringify({

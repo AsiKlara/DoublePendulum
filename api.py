@@ -186,9 +186,39 @@ def post_json_ipfs(cid):
         data_dict2 = json.loads(response.text)
         cid2 = data_dict2["data"]["CID"]
         n += 1
-
-    # print(cid2)
     return cid2
 
+def get_cid():
+    name = "double_pendulum_animation.mp4"
 
+    # The path to the video file you want to upload
+    file_path = f'./{name}'
 
+    # calculate cid
+    cid = cid_sha256_hash(open(file_path, 'rb').read())
+    print(cid)
+
+    metadata = """
+            {{
+              "name": "Double Pendulum",
+              "description": "",
+              "image": "ipfs://{0}",
+              "attributes": [
+                {{
+                  "trait_type": "Color",
+                  "value": "Blue"
+                }},
+                {{
+                  "trait_type": "Size",
+                  "value": "Large"
+                }}
+              ]
+            }}
+            """.format(cid)
+
+    metadata_json = json.dumps(metadata)
+
+    # calculate cid
+    cid2 = cid_sha256_hash(metadata_json.encode('utf-8'))
+    print(cid2)
+    return cid2, metadata_json
