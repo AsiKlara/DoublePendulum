@@ -191,7 +191,7 @@ def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1
           
           I hope You are enjoying cute animation <3.",
           "image": "ipfs://{0}",
-          "video": "ipfs://{0}",
+          "video": "ipfs://{11}",
           "attributes": [
             {{
               "trait_type": "Number of Pendulums",
@@ -235,7 +235,7 @@ def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1
             }}
           ]
         }}
-        """.format(cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
+        """.format(cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, cid_video)
 
     metadata_json = json.dumps(metadata)
 
