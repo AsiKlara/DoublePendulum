@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import time
 from ipfs_cid import cid_sha256_hash
 
 bucketuuid = os.getenv("BUCKETUUID")
@@ -15,10 +16,6 @@ def post_ipfs():
 
     # The path to the video file you want to upload
     file_path = f'./{name}'
-
-    # calculate cid
-    cid = cid_sha256_hash(open(file_path, 'rb').read())
-    print(cid)
 
     # Open the file in binary mode and prepare it for upload
     with open(file_path, 'rb') as file:
@@ -81,16 +78,16 @@ def post_ipfs():
     headers = {
         "Authorization": authentication  # Replace :credentials with actual base64-encoded credentials
     }
-    '''cid = None
+    cid = None
     n = 0
-    while cid is None and n <= 5:
+    while cid is None and n <= 10:
         # Send the GET request
         time.sleep(5)
         response = requests.get(url_file, headers=headers)
         data_dict2 = json.loads(response.text)
         cid = data_dict2["data"]["CID"]
         n += 1
-    print(f"first: {cid}")'''
+    print(f"first: {cid}")
     return cid
 
 
@@ -100,7 +97,22 @@ def post_json_ipfs(cid):
     metadata = """
         {{
           "name": "Double Pendulum",
-          "description": "",
+          "description": "Hi, my name is Klára and I'm currently studying mathematical modeling at university. 
+          
+          This collection of NFTs is connecting world of modeling physics and crypto. 
+          As you can see, even the slightest change in initial conditions is resulting to completely 
+          different trajectories of pendulums. This effect is called deterministic chaos. 
+          It means that despite the fact that we have complete equations describing its motion, 
+          we can never predict said motion for long time, it appears chaotic, 
+          because we can't measure initial conditions exactly. 
+          
+          I used this principle to generate completely unique NFTs so You can (and already did) generate 
+          Yours original NFT.
+          
+          Technical info: I used Classic Runge-Kutta method for numerical solving 
+          Hamilton's canonical equations of double pendulum motion.
+          
+          I hope You are enjoying cute animation <3.",
           "image": "ipfs://{0}",
           "attributes": [
             {{
@@ -116,10 +128,6 @@ def post_json_ipfs(cid):
         """.format(cid)
 
     metadata_json = json.dumps(metadata)
-
-    # calculate cid
-    cid2 = cid_sha256_hash(metadata_json.encode('utf-8'))
-    print(cid2)
 
     headers_upload2 = {
         "Authorization": authentication,
@@ -169,15 +177,15 @@ def post_json_ipfs(cid):
         "Authorization": authentication
     }
 
-    '''cid2 = None
+    cid2 = None
     n = 0
-    while cid2 is None and n <= 5:
+    while cid2 is None and n <= 10:
         # Send the GET request
         time.sleep(5)
         response = requests.get(url_file, headers=headers)
         data_dict2 = json.loads(response.text)
         cid2 = data_dict2["data"]["CID"]
-        n += 1'''
+        n += 1
 
     # print(cid2)
     return cid2
