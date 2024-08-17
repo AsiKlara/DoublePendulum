@@ -151,7 +151,7 @@
 
                     document.getElementById("mint_button").innerHTML = "Posting to IPFS..."
                     // get all initial conditions back to python
-                    const response = fetch("/mint_nft", {
+                    const response = await fetch("/mint_nft", {
                         method:"POST",
                         body: JSON.stringify({
                                 // n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
