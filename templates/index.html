@@ -304,10 +304,45 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            var initialSliderValue = document.getElementById('d_diff_slider').value;
+            // n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
+            {% if n_pendulums %}
+                document.getElementById('n_pendulums').value = {{n_pendulums}}
+            {% endif %}
+            {% if d_diff %}
+                initialSliderValue = {{d_diff}}
+            {% else %}
+                var initialSliderValue = document.getElementById('d_diff_slider').value;
+            {% endif %}
+            {% if t_max %}
+                document.getElementById('t_max').value = {{t_max}}
+            {% endif %}
+            {% if g %}
+                document.getElementById('g').value = {{g}}
+            {% endif %}
+            {% if m1 %}
+                document.getElementById('m1').value = {{m1}}
+            {% endif %}
+            {% if m2 %}
+                document.getElementById('m2').value = {{m2}}
+            {% endif %}
+            {% if L1 %}
+                document.getElementById('L1').value = {{L1}}
+            {% endif %}
+            {% if L2 %}
+                document.getElementById('L2').value = {{L2}}
+            {% endif %}
+            {% if theta1 %}
+                document.getElementById('theta1').value = {{theta1}}
+            {% else %}
+                setRandomTheta1();
+            {% endif %}
+            {% if theta2 %}
+                document.getElementById('theta2').value = {{theta2}}
+            {% else %}
+                setRandomTheta2();
+            {% endif %}
+
             updateSlider(initialSliderValue);
-            setRandomTheta1();
-            setRandomTheta2();
             updateColormapDisplay();
         });
 

@@ -14,7 +14,7 @@ def set_metadata(item_id, cid):
     call = substrate.compose_call(call_module="Nfts", call_function="set_metadata", call_params={
         "collection": int(collectionid),
         "item": int(item_id),
-        "data": f"ipfs://{cid}"
+        "data": cid
     })
 
     extrinsic = substrate.create_signed_extrinsic(call=call, keypair=keypair, era={'period': 64})

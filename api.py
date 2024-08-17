@@ -91,9 +91,10 @@ def post_ipfs():
     return cid
 
 
-def post_json_ipfs(cid):
+def post_json_ipfs(cid, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
     print(cid)
     # create json metadata
+    # get initial conditions to metadata
     metadata = """
         {{
           "name": "Double Pendulum",
@@ -116,16 +117,48 @@ def post_json_ipfs(cid):
           "image": "ipfs://{0}",
           "attributes": [
             {{
-              "trait_type": "Color",
-              "value": "Blue"
+              "trait_type": "Number of Pendulums",
+              "value": "{1}"
             }},
             {{
-              "trait_type": "Size",
-              "value": "Large"
+              "trait_type": "Difference of pendulums",
+              "value": "{2}"
+            }},
+            {{
+              "trait_type": "Simulation length",
+              "value": "{3}"
+            }},
+            {{
+              "trait_type": "Gravitational acceleration",
+              "value": "{4}"
+            }},
+            {{
+              "trait_type": "Mass 1",
+              "value": "{5}"
+            }},
+            {{
+              "trait_type": "Mass 2",
+              "value": "{6}"
+            }},
+            {{
+              "trait_type": "Length 1",
+              "value": "{7}"
+            }},
+            {{
+              "trait_type": "Length 2",
+              "value": "{8}"
+            }},
+            {{
+              "trait_type": "Theta 1",
+              "value": "{9}"
+            }},
+            {{
+              "trait_type": "Theta 2",
+              "value": "{10}"
             }}
           ]
         }}
-        """.format(cid)
+        """.format(cid, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
 
     metadata_json = json.dumps(metadata)
 
@@ -187,6 +220,11 @@ def post_json_ipfs(cid):
         cid2 = data_dict2["data"]["CID"]
         n += 1
     return cid2
+
+
+def get_initial_conditions(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background):
+    return n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
+
 
 def get_cid():
     name = "double_pendulum_animation.mp4"

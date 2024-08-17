@@ -12,14 +12,31 @@ collectionid = os.getenv("COLLECTIONID")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', cid=None, video=False, wsendpoint=wsendpoint, collectionid=collectionid)
+    return render_template('index.html', cid=None, video=False, wsendpoint=wsendpoint,
+                           collectionid=collectionid, n_pendulums=False, d_diff=False, t_max=False, g=False, m1=False,
+                           m2=False, L1=False, L2=False, theta1=False, theta2=False)
 
 
 @app.route("/mint_nft", methods=["POST"])
 def mint_nft():
-    cid = post_json_ipfs(post_ipfs())
+    n_pendulums = int(request.form['n_pendulums'])
+    d_diff = float(request.form['d_diff'])
+    t_max = float(request.form['t_max'])
+    g = float(request.form['g'])
+    m1 = float(request.form['m1'])
+    m2 = float(request.form['m2'])
+    L1 = float(request.form['L1'])
+    L2 = float(request.form['L2'])
+    theta1 = float(request.form['theta1'])
+    theta2 = float(request.form['theta2'])
+    colormap = request.form['colormap']
+    background = request.form['background']
 
-    return render_template("index.html", cid=cid, video=True, wsendpoint=wsendpoint, collectionid=collectionid)
+    cid = post_json_ipfs(post_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
+
+    return render_template("index.html", cid=cid, video=True, wsendpoint=wsendpoint,
+                           collectionid=collectionid, n_pendulums=n_pendulums, d_diff=d_diff, t_max=t_max, g=g, m1=m1,
+                           m2=m2, L1=L1, L2=L2, theta1=theta1, theta2=theta2)
 
 
 @app.route("/set_nft_metadata", methods=["POST"])
@@ -50,7 +67,9 @@ def export():
 
     # Run the simulation with the provided parameters and colormap
     run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background)
-    return render_template("index.html", cid=None, video=True, wsendpoint=wsendpoint, collectionid=collectionid)
+    return render_template("index.html", cid=None, video=True, wsendpoint=wsendpoint,
+                           collectionid=collectionid, n_pendulums=n_pendulums, d_diff=d_diff, t_max=t_max, g=g, m1=m1,
+                           m2=m2, L1=L1, L2=L2, theta1=theta1, theta2=theta2)
 
 
 @app.route('/save', methods=['POST'])
