@@ -8,7 +8,7 @@ n_pendulums = 10
 # degree difference
 d_diff = 0.000001
 # simulation length
-t_max = 15
+t_max = 7
 # constants
 g = 9.81  # gravitational acceleration
 # masses
@@ -308,12 +308,30 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
     # Display the animation
     # plt.show()
 
-    frame_to_save = int(4.95 * fps)  # Frame at 5 seconds
-
+    frame_to_save = int(4.95 * fps)  # Frame at 5 second
     # Update the plot for all frames up to the frame_to_save
     for frame in range(frame_to_save + 1):
         update(frame)
     plt.savefig(f'double_pendulum_thumbnail.png', bbox_inches='tight', pad_inches=0)  # Save the frame as an image
+
+    # Clear the plot data before starting the animation
+    for i in range(n_pendulums):
+        lines1[i].set_data([], [])
+        lines2[i].set_data([], [])
+        trajectories[i].set_data([], [])
+    x2_traj = [[] for _ in range(n_pendulums)]
+    y2_traj = [[] for _ in range(n_pendulums)]
+
+    # Create the animation
+    ani = animation.FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True,
+                                  interval=1000 / fps)
+
+    # If you want to save, not only show animation
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=fps, metadata=dict(artist='Me'), bitrate=1800)
+
+    # Save the animation as an MP4 file
+    ani.save('double_pendulum_animation.mp4', writer=writer)
 
 
 t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)

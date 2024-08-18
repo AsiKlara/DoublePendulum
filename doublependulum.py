@@ -292,6 +292,20 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
 
             return trajectories + lines1 + lines2
 
+        frame_to_save = int(4.95 * fps)  # Frame at 5 second
+        # Update the plot for all frames up to the frame_to_save
+        for frame in range(frame_to_save + 1):
+            update(frame)
+        plt.savefig(f'double_pendulum_thumbnail.png', bbox_inches='tight', pad_inches=0)  # Save the frame as an image
+
+        # Clear the plot data before starting the animation
+        for i in range(n_pendulums):
+            lines1[i].set_data([], [])
+            lines2[i].set_data([], [])
+            trajectories[i].set_data([], [])
+        x2_traj = [[] for _ in range(n_pendulums)]
+        y2_traj = [[] for _ in range(n_pendulums)]
+
         # Create the animation
         ani = animation.FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True,
                                       interval=1000 / fps)
@@ -302,12 +316,6 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
 
         # Save the animation as an MP4 file
         ani.save('double_pendulum_animation.mp4', writer=writer)
-
-        frame_to_save = int(4.95 * fps)  # Frame at 5 second
-        # Update the plot for all frames up to the frame_to_save
-        for frame in range(frame_to_save + 1):
-            update(frame)
-        plt.savefig(f'double_pendulum_thumbnail.png', bbox_inches='tight', pad_inches=0)  # Save the frame as an image
 
     t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)
     x1, y1, x2, y2 = back_to_cartesian(theta1_arr, theta2_arr, L1, L2, n_steps, n_pendulums)
