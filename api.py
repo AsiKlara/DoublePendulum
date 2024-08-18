@@ -168,11 +168,10 @@ def post_img_ipfs():
 
 
 def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
-    simulation_url = "https://polkadotpendulums.com/"
+    simulation_url = "https://polkadotpendulums.com"
     print(cid_img)
     # create json metadata
     # get initial conditions to metadata
-    # "image": f"ipfs://{cid_img}",
     metadata = {
         "name": "Double Pendulum",
         "description": f"""Hi, my name is Klara and I'm currently studying mathematical modeling at university. 
@@ -185,7 +184,7 @@ def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1
     because we can't measure initial conditions exactly. 
 
     I used this principle to generate completely unique NFTs so you can (and already did) generate 
-    your original NFT.
+    your original NFT. You can also see the video here: f"ipfs.io/ipfs/{cid_video}"
 
     Technical info: I used the Classic Runge-Kutta method for numerical solving 
     Hamilton's canonical equations of double pendulum motion.
