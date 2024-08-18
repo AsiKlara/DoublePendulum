@@ -168,10 +168,11 @@ def post_img_ipfs():
 
 
 def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
-    simulation_url = "https://seahorse-app-lhmry.ondigitalocean.app/"
+    simulation_url = "https://polkadotpendulums.com/"
     print(cid_img)
     # create json metadata
     # get initial conditions to metadata
+    # "image": f"ipfs://{cid_img}",
     metadata = {
         "name": "Double Pendulum",
         "description": f"""Hi, my name is Klara and I'm currently studying mathematical modeling at university. 
@@ -190,8 +191,7 @@ def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1
     Hamilton's canonical equations of double pendulum motion.
 
     I hope you are enjoying the cute animation <3. You can use this page: {simulation_url} to get more NFTs.""",
-        "image": f"ipfs://{cid_img}",
-        "video": f"ipfs://{cid_video}",
+        "image": f"ipfs://{cid_video}",
         "attributes": [
             {
                 "trait_type": "Number of Pendulums",
