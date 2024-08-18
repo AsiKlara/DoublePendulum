@@ -91,7 +91,7 @@
                     </tr>
                     <tr>
                         <td><label for="t_max">Max Time:</label></td>
-                        <td><input type="number" step="1" id="t_max" name="t_max" required min="5" max="20" value="15"></td>
+                        <td><input type="number" step="1" id="t_max" name="t_max" required min="5" max="15" value="10"></td>
                     </tr>
                     <tr>
                         <td><label for="g">Gravity (g):</label></td>
@@ -281,7 +281,7 @@
         // These are for visuals such as slider or colormaps
 
         function updateSlider(value) {
-            var min = Math.log(0.0000001);
+            var min = Math.log(0.000001);
             var max = Math.log(0.01);
             var scale = (max - min) * (value / 100) + min;
             var logValue = Math.exp(scale);

@@ -6,9 +6,9 @@ import matplotlib.animation as animation
 # number of pendulums
 n_pendulums = 10
 # degree difference
-d_diff = 0.000001
+d_diff = 0.00001
 # simulation length
-t_max = 7
+t_max = 5
 # constants
 g = 9.81  # gravitational acceleration
 # masses
@@ -306,9 +306,10 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
                                   interval=1000 / fps)
 
     # Display the animation
-    # plt.show()
 
-    frame_to_save = int(4.95 * fps)  # Frame at 5 second
+    plt.show()
+
+    '''frame_to_save = int(4.95 * fps)  # Frame at 5 second
     # Update the plot for all frames up to the frame_to_save
     for frame in range(frame_to_save + 1):
         update(frame)
@@ -331,7 +332,7 @@ def animace(x1, y1, x2, y2, n_steps, dt, n_pendulums):
     writer = Writer(fps=fps, metadata=dict(artist='Me'), bitrate=1800)
 
     # Save the animation as an MP4 file
-    ani.save('double_pendulum_animation.mp4', writer=writer)
+    ani.save('double_pendulum_animation.mp4', writer=writer)'''
 
 
 t_arr, theta1_arr, theta2_arr = runge_kutta(n_steps, dt, t_arr, theta1_arr, theta2_arr, p1, p2, L1, L2, n_pendulums)
