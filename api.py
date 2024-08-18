@@ -198,10 +198,6 @@ def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1
                 "value": n_pendulums
             },
             {
-                "trait_type": "Difference of pendulums",
-                "value": d_diff
-            },
-            {
                 "trait_type": "Simulation length",
                 "value": t_max
             },
