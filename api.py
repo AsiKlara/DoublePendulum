@@ -168,76 +168,77 @@ def post_img_ipfs():
 
 
 def post_json_ipfs(cid_video, cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
+    simulation_url = "https://seahorse-app-lhmry.ondigitalocean.app/"
     print(cid_img)
     # create json metadata
     # get initial conditions to metadata
-    metadata = """
-        {{
-          "name": "Double Pendulum",
-          "description": "Hi, my name is Klára and I'm currently studying mathematical modeling at university. 
-          
-          This collection of NFTs is connecting world of modeling physics and crypto. 
-          As you can see, even the slightest change in initial conditions is resulting to completely 
-          different trajectories of pendulums. This effect is called deterministic chaos. 
-          It means that despite the fact that we have complete equations describing its motion, 
-          we can never predict said motion for long time, it appears chaotic, 
-          because we can't measure initial conditions exactly. 
-          
-          I used this principle to generate completely unique NFTs so You can (and already did) generate 
-          Yours original NFT.
-          
-          Technical info: I used Classic Runge-Kutta method for numerical solving 
-          Hamilton's canonical equations of double pendulum motion.
-          
-          I hope You are enjoying cute animation <3.",
-          "image": "ipfs://{0}",
-          "video": "ipfs://{11}",
-          "attributes": [
-            {{
-              "trait_type": "Number of Pendulums",
-              "value": "{1}"
-            }},
-            {{
-              "trait_type": "Difference of pendulums",
-              "value": "{2}"
-            }},
-            {{
-              "trait_type": "Simulation length",
-              "value": "{3}"
-            }},
-            {{
-              "trait_type": "Gravitational acceleration",
-              "value": "{4}"
-            }},
-            {{
-              "trait_type": "Mass 1",
-              "value": "{5}"
-            }},
-            {{
-              "trait_type": "Mass 2",
-              "value": "{6}"
-            }},
-            {{
-              "trait_type": "Length 1",
-              "value": "{7}"
-            }},
-            {{
-              "trait_type": "Length 2",
-              "value": "{8}"
-            }},
-            {{
-              "trait_type": "Theta 1",
-              "value": "{9}"
-            }},
-            {{
-              "trait_type": "Theta 2",
-              "value": "{10}"
-            }}
-          ]
-        }}
-        """.format(cid_img, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, cid_video)
+    metadata = {
+        "name": "Double Pendulum",
+        "description": f"""Hi, my name is Klara and I'm currently studying mathematical modeling at university. 
 
-    metadata_json = json.dumps(metadata)
+    This collection of NFTs is connecting the world of modeling physics and crypto. 
+    As you can see, even the slightest change in initial conditions results in completely 
+    different trajectories of pendulums. This effect is called deterministic chaos. 
+    It means that despite the fact that we have complete equations describing its motion, 
+    we can never predict said motion for a long time; it appears chaotic 
+    because we can't measure initial conditions exactly. 
+
+    I used this principle to generate completely unique NFTs so you can (and already did) generate 
+    your original NFT.
+
+    Technical info: I used the Classic Runge-Kutta method for numerical solving 
+    Hamilton's canonical equations of double pendulum motion.
+
+    I hope you are enjoying the cute animation <3. You can use this page: {simulation_url} to get more NFTs.""",
+        "image": f"ipfs://{cid_img}",
+        "video": f"ipfs://{cid_video}",
+        "attributes": [
+            {
+                "trait_type": "Number of Pendulums",
+                "value": n_pendulums
+            },
+            {
+                "trait_type": "Difference of pendulums",
+                "value": d_diff
+            },
+            {
+                "trait_type": "Simulation length",
+                "value": t_max
+            },
+            {
+                "trait_type": "Gravitational acceleration",
+                "value": g
+            },
+            {
+                "trait_type": "Mass 1",
+                "value": m1
+            },
+            {
+                "trait_type": "Mass 2",
+                "value": m2
+            },
+            {
+                "trait_type": "Length 1",
+                "value": L1
+            },
+            {
+                "trait_type": "Length 2",
+                "value": L2
+            },
+            {
+                "trait_type": "Theta 1",
+                "value": theta1
+            },
+            {
+                "trait_type": "Theta 2",
+                "value": theta2
+            }
+        ]
+    }
+
+    metadata_json = json.dumps(metadata, indent=2)
+
+    # print(metadata_json)
 
     headers_upload2 = {
         "Authorization": authentication,
