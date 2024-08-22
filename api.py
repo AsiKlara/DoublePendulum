@@ -169,7 +169,6 @@ def post_img_ipfs():
 
 def post_json_ipfs(cid_video, n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2):
     simulation_url = "https://polkadotpendulums.com"
-    print(cid_img)
     # create json metadata
     # get initial conditions to metadata
     metadata = {
