@@ -292,7 +292,7 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
 
             return trajectories + lines1 + lines2
 
-        frame_to_save = int(4.95 * fps)  # Frame at 5 second
+        '''frame_to_save = int(4.95 * fps)  # Frame at 5 second
         # Update the plot for all frames up to the frame_to_save
         for frame in range(frame_to_save + 1):
             update(frame)
@@ -304,7 +304,7 @@ def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2
             lines2[i].set_data([], [])
             trajectories[i].set_data([], [])
         x2_traj = [[] for _ in range(n_pendulums)]
-        y2_traj = [[] for _ in range(n_pendulums)]
+        y2_traj = [[] for _ in range(n_pendulums)]'''
 
         # Create the animation
         ani = animation.FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True,

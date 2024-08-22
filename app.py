@@ -32,7 +32,7 @@ def mint_nft():
     theta1 = data.get('theta1')
     theta2 = data.get('theta2')
 
-    cid = post_json_ipfs(post_ipfs(), post_img_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
+    cid = post_json_ipfs(post_ipfs(), n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2)
 
     return cid, 200
 

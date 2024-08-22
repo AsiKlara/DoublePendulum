@@ -141,12 +141,39 @@
                     <button disabled>Mint NFT (0.2 DOT ~ 1 USD)</button>
                 {%endif%}
             <script>
+                // getting cid from python
                 const video = "{{video}}"
                 const wsEndpoint = "{{wsendpoint}}"
                 const collectionId = "{{collectionid}}"
 
                 async function mint() {
                     document.getElementById("mint_button").disabled=true;
+
+                    document.getElementById("mint_button").innerHTML = "Posting to IPFS..."
+                    // get all initial conditions back to python
+                    const response = await fetch("/mint_nft", {
+                        method:"POST",
+                        body: JSON.stringify({
+                                // n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
+                                n_pendulums: document.getElementById('n_pendulums').value,
+                                d_diff: document.getElementById('d_diff').value,
+                                t_max: document.getElementById('t_max').value,
+                                g: document.getElementById('g').value,
+                                m1: document.getElementById('m1').value,
+                                m2: document.getElementById('m2').value,
+                                L1: document.getElementById('L1').value,
+                                L2: document.getElementById('L2').value,
+                                theta1: document.getElementById('theta1').value,
+                                theta2: document.getElementById('theta2').value
+                            }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+
+                    const cid = await response.text();
+
+                    console.log("cid received: " + cid)
 
                     // import from CDN (the links at the top)
                     const { web3Accounts, web3Enable, web3FromAddress } = polkadotExtensionDapp;
@@ -208,32 +235,6 @@
                     // calling more transactions in one (mint and setting metadata)
                     await mint.signAndSend(SENDER, { signer: injector.signer }, async ({ status, events }) => {
                         if (status.isInBlock) {
-
-                            document.getElementById("mint_button").innerHTML = "Posting to IPFS..."
-                            // get all initial conditions back to python
-                            const response = await fetch("/mint_nft", {
-                                method:"POST",
-                                body: JSON.stringify({
-                                        // n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background
-                                        n_pendulums: document.getElementById('n_pendulums').value,
-                                        d_diff: document.getElementById('d_diff').value,
-                                        t_max: document.getElementById('t_max').value,
-                                        g: document.getElementById('g').value,
-                                        m1: document.getElementById('m1').value,
-                                        m2: document.getElementById('m2').value,
-                                        L1: document.getElementById('L1').value,
-                                        L2: document.getElementById('L2').value,
-                                        theta1: document.getElementById('theta1').value,
-                                        theta2: document.getElementById('theta2').value
-                                    }),
-                                headers: {
-                                    "Content-type": "application/json; charset=UTF-8"
-                                    }
-                                })
-
-                            const cid = await response.text();
-
-                            console.log("cid received: " + cid)
 
                             document.getElementById("mint_button").innerHTML = "Setting metadata..."
                             console.log("setting metadata")
