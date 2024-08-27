@@ -1,45 +1,16 @@
 # Double Pendulum
 
-Project name: Double Pendulum
-First Commit: 
+### Project name: 
+Double Pendulum
+### First Commit (creation date):
+July 18. 2024
+### Background: 
+new project
 
-Program visualises deterministic chaos of double pendulum system.
-Depending on initial conditions and other parameters (such as mass or length)
-the program calculates trajectory of n double pendulums which at the beginning
-starts at the position differing by only a small fraction of radian.
-Hamilton canonical equations of motion are solved numerically by runge-kutta classical
-method (RK4). Visualisation and animation is created using matplotlib package.
+### Problem to be solved: 
+Create interactive animated NFTs using principle of physics called deterministic chaos.
 
-After creating the animation, user can download it to see how their setting turned out 
-and determine if they want to mint it as an NFT. Minting price is 0.2 DOT.
-
-
-## where to mint the NFTs
-
-Go to: https://polkadotpendulums.com/
-
-
-## what you can change in animation
-- `colormap` changes colormap for pendulums gradient
-- `background` changes background of animation
-- `n_pendulums` changes how many pendulums will be displayed
-- `d_diff` difference in angle between pendulums
-- `t_max` is length of simulation
-- `g` can be changed, but it's set to earth, so why changing it?
-- `m1`, `m2`, `L1`, `L2` masses and lengths
-- `theta1`, `theta2` initial angles
-
-
-## demo video
-
-https://youtu.be/_KV9R0AUE8A
-
-
-# Documentation
-
-## Overview
-
-### animation
+### Overview: 
 Program visualises deterministic chaos of double pendulum system.
 Depending on initial conditions and other parameters (such as mass or length) the program calculates trajectory of n
 double pendulums which at the beginning starts at the position differing by only a small fraction of radian.
@@ -50,20 +21,33 @@ Visualisation and animation is created using matplotlib package.
 After creating an animation, user can save it and check if it's pretty enough for them to mint it.
 Saving the animation as .mp4 is done by ffmpeg.
 
-### making it public
 I used flask UI to create a python server. The web page is created mainly in index.html and styles.css.
 Everything is deployed to DigitalOcean. I also needed to use Dockerfile to install ffmpeg.
 All secret details are hidden in .env file.
 
-### NFTs
 Goal was to mint NFTs on Polkadot Asset Hub (system parachain). After NFT is minted, video is posted to IPFS 
 using Apillon api and after getting cid, metadata are created and also posted to IPFS. 
 Connectiong to wallet is done using polkadot.js/extension and minting with polkadot.js/api. 
 Posting to IPFS is done in python in api.py. And setting metadata is also in python (set_metadata.py) with py-substrate-interface, 
 because of using .env file for some secret details.
 
+### Project demonstration:
 
-## Initialization
+Go to: https://polkadotpendulums.com/
+Demo video: https://youtu.be/_KV9R0AUE8A
+
+### Project logo:
+![Logo](/static/logo.jpg)
+
+### Team information:
+My name is Klára Anna Šindlerová, I'm university student from Czechia. 
+This is my first time participating in hackathon. I'm usually just working on something more physics oriented. 
+But this was also fun and I hope my animations will make people more interested in physics.
+
+### Project completed during hackathon
+Everything is completed, web is working, NFT collection is on main net and NFTs are mintable.
+
+# Technical architecture
 
 # doublependulum.py
 
