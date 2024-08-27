@@ -5,6 +5,22 @@ import matplotlib.animation as animation
 
 
 def run_simulation(n_pendulums, d_diff, t_max, g, m1, m2, L1, L2, theta1, theta2, colormap, background):
+    """
+    run double pendulum simulation and creating double_pendulum_animation.mp4
+    :param n_pendulums: number of pendulums
+    :param d_diff: difference between pendulums
+    :param t_max: time of simulation
+    :param g: gravitational acceleration
+    :param m1: mass 1
+    :param m2: mass 2
+    :param L1: length 1
+    :param L2: length 2
+    :param theta1: theta 1
+    :param theta2: theta 2
+    :param colormap: colormap for pendulums colors
+    :param background: background color
+    :return:
+    """
     g = -g
 
     # step

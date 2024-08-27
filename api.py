@@ -39,10 +39,9 @@ def post_ipfs():
 
         # Send the POST request with the file
         response = requests.post(url_upload, headers=headers_upload, data=json_data)
-    print("ahoj")
+
     print(response.text)
     if not response.ok:
-        print("baf")
         print(response.text)
     # to dict
     data_dict = json.loads(response.text)
@@ -76,7 +75,7 @@ def post_ipfs():
 
     # Headers for the GET request
     headers = {
-        "Authorization": authentication  # Replace :credentials with actual base64-encoded credentials
+        "Authorization": authentication  # getting from .env
     }
     cid = None
     n = 0
@@ -152,7 +151,7 @@ def post_img_ipfs():
 
     # Headers for the GET request
     headers = {
-        "Authorization": authentication  # Replace :credentials with actual base64-encoded credentials
+        "Authorization": authentication
     }
     cid = None
     n = 0

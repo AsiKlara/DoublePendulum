@@ -7,6 +7,12 @@ collectionid = os.getenv("COLLECTIONID")
 
 
 def set_metadata(item_id, cid):
+    """
+    setting metadata in python substrate interface, so it can be signed secretly with .env
+    :param item_id: is id of an NFT we are setting metadata to
+    :param cid: cid of metadata json
+    :return:
+    """
     substrate = SubstrateInterface(url=wsendpoint)
 
     keypair = Keypair.create_from_uri(os.getenv("METADATASECRETKEY"))
